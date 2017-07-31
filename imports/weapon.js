@@ -83,7 +83,7 @@ class Weapon {
 		//const collisionRect = new Phaser.Rectangle(beamLine.left, beamLine.top, Math.max(1, beamLine.right - beamLine.left), Math.max(1, beamLine.bottom - beamLine.top));
 		const collisionRect = beamLine;
 
-		const collidingObjects = this.gameObjects.filter((object) => {
+		const collidingObjects = this.gameObjects.get(true).filter((object) => {
 			if (object === this.player.sprite || object.key === 'power-up') {
 				return false;
 			}

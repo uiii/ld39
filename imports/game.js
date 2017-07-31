@@ -1,6 +1,8 @@
 import Phaser from './phaser';
+import GameObjects from './gameObjects';
 import Player from './player';
 import Battery from './battery';
+import FirstAids from './firstAid';
 import PowerUps from './powerUp';
 import Boxes from './boxes';
 import {Side} from './constants';
@@ -13,6 +15,9 @@ class Game {
 		this.game.load.image('power-up', 'power-up.png');
 		this.game.load.image('beam', 'beam.png');
 		this.game.load.spritesheet('box', 'box.png', 60, 65);
+		this.game.load.spritesheet('heart', 'heart.png', 45, 40);
+		this.game.load.image('first-aid', 'first-aid.png');
+		this.game.load.image('blank', 'blank.png');
 		this.game.load.image('background', 'background.png');
 	}
 
@@ -22,10 +27,10 @@ class Game {
 
 		this.game.physics.arcade.setBounds(5, 105, this.game.width - 10, this.game.height - 110);
 
-		this.gameObjects = [];
+		this.gameObjects = new GameObjects();
 
 		this.battery = new Battery(this.game, {x: this.game.world.centerX, y: 170});
-		this.gameObjects.push(this.battery.sprite);
+		this.gameObjects.add(this.battery.sprite);
 
 		this.player1 = new Player(this.game, this.gameObjects, this.battery, this.game.input.keyboard.addKeys({
 			up: Phaser.KeyCode.UP,
@@ -47,7 +52,10 @@ class Game {
 
 		this.boxes = new Boxes(this.game, this.gameObjects);
 
+		this.firstAids = new FirstAids(this.game, this.gameObjects);
 		this.powerUps = new PowerUps(this.game, this.gameObjects, this.battery);
+
+		window.player = this.player1;
 	}
 
 	update() {
@@ -55,6 +63,9 @@ class Game {
 		this.boxes.collide(this.player2);
 
 		this.game.physics.arcade.collide(this.player1.sprite, this.player2.sprite);
+
+		this.firstAids.checkOverlap(this.player1);
+		this.firstAids.checkOverlap(this.player2);
 
 		this.powerUps.checkOverlap(this.player1);
 		this.powerUps.checkOverlap(this.player2);

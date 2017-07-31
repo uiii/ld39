@@ -1,4 +1,5 @@
 import Phaser from './phaser';
+import Health from './health';
 import Weapon from './weapon';
 import Config from './config';
 import {Direction, Side} from './constants';
@@ -15,6 +16,7 @@ class Player {
 		this.pressedMoveKeys = [];
 
 		this.sprite = this.createSprite(game, side, this.direction);
+		this.health = new Health(game, this);
 		this.weapon = new Weapon(game, gameObjects, battery, this);
 		this.powerUps = [];
 
@@ -23,7 +25,7 @@ class Player {
 
 	createSprite(game, side, direction) {
 		const sprite = game.add.sprite(0, 0, side === Side.LEFT ? 'robot' : 'robot', direction);
-		this.gameObjects.push(sprite);
+		this.gameObjects.add(sprite, true);
 		sprite.smoothed = false;
 		sprite.animations.add('left', [1, 2, 0], 10, false);
 		sprite.animations.add('right', [4, 5, 3], 10, false);
@@ -174,7 +176,7 @@ class Player {
 		powerUp.sprite.alignIn(
 			this.game.world.bounds,
 			this.side === Side.LEFT ? Phaser.TOP_LEFT : Phaser.TOP_RIGHT,
-			- (10 + this.powerUps.length * 15),
+			- (75 + this.powerUps.length * 15),
 			-10
 		);
 		powerUp.sprite.bringToTop();
@@ -206,6 +208,7 @@ class Player {
 			this.weakUp();
 		}
 
+		this.health.update();
 		this.weapon.update();
 
 		this.move();

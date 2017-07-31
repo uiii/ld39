@@ -38,7 +38,7 @@ class PowerUps {
 		powerUpBounds.y = powerUp.y;
 		powerUpBounds.inflate(30, 30);
 
-		const overlap = this.gameObjects.some((object) => {
+		const overlap = this.gameObjects.get().some((object) => {
 			return Phaser.Rectangle.intersects(object.getBounds(), powerUpBounds);
 		});
 
@@ -47,7 +47,7 @@ class PowerUps {
 			return;
 		}
 
-		this.gameObjects.push(powerUp);
+		this.gameObjects.add(powerUp);
 		this.lastAddTime = this.game.time.time;
 	}
 

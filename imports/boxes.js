@@ -46,7 +46,7 @@ class Boxes {
 		box.body.immovable = true;
 		box.anchor.setTo(0.5, 0);
 
-		this.gameObjects.push(box);
+		this.gameObjects.add(box, true);
 	}
 }
 
