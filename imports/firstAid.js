@@ -19,7 +19,7 @@ class FirstAid {
 	checkOverlap(player) {
 		if (this.game.physics.arcade.overlap(player.sprite, this.sprite)) {
 			this.sprite.kill();
-			player.health.heal(20);
+			player.health.heal(25);
 			this.healSound.stop();
 			this.healSound.play();
 			this.game.time.events.add(10000, this.refresh.bind(this));

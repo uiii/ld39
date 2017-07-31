@@ -27,7 +27,7 @@ class Player {
 		this.powerUps = [];
 		this.powerUpPickupSound = this.game.add.audio('power-up-pickup');
 		this.sleepSound = this.game.add.audio('sleep');
-		this.weakUpSound = this.game.add.audio('weak-up');
+		this.wakeUpSound = this.game.add.audio('wake-up');
 		this.dyingSound = this.game.add.audio('die');
 
 		this.setKeyEvents(this.keys);
@@ -51,10 +51,10 @@ class Player {
 		sprite.animations.add(`sleep-${Direction.RIGHT}`, [3, 14, 15], 2, false);
 		sprite.animations.add(`sleep-${Direction.UP}`, [9, 18, 19], 2, false);
 		sprite.animations.add(`sleep-${Direction.DOWN}`, [6, 16, 17], 2, false);
-		sprite.animations.add(`weak-up-${Direction.LEFT}`, [13, 12, 0], 2, false).onComplete.add(this.onWeakUp.bind(this));
-		sprite.animations.add(`weak-up-${Direction.RIGHT}`, [15, 14, 3], 2, false).onComplete.add(this.onWeakUp.bind(this));
-		sprite.animations.add(`weak-up-${Direction.UP}`, [19, 18, 9], 2, false).onComplete.add(this.onWeakUp.bind(this));
-		sprite.animations.add(`weak-up-${Direction.DOWN}`, [17, 16, 6], 2, false).onComplete.add(this.onWeakUp.bind(this));
+		sprite.animations.add(`wake-up-${Direction.LEFT}`, [13, 12, 0], 2, false).onComplete.add(this.onWakeUp.bind(this));
+		sprite.animations.add(`wake-up-${Direction.RIGHT}`, [15, 14, 3], 2, false).onComplete.add(this.onWakeUp.bind(this));
+		sprite.animations.add(`wake-up-${Direction.UP}`, [19, 18, 9], 2, false).onComplete.add(this.onWakeUp.bind(this));
+		sprite.animations.add(`wake-up-${Direction.DOWN}`, [17, 16, 6], 2, false).onComplete.add(this.onWakeUp.bind(this));
 		sprite.animations.add(`die-${Direction.RIGHT}`, [20, 21, 22, 23, 24, 25, 26, 27, 28], 3, false).onComplete.add(this.onDead.bind(this));
 		sprite.animations.add(`die-${Direction.LEFT}`, [29, 30, 31, 32, 33, 34, 35, 36, 37], 3, false).onComplete.add(this.onDead.bind(this));
 		sprite.animations.add(`die-${Direction.UP}`, [20, 21, 22, 23, 24, 25, 26, 27, 28], 3, false).onComplete.add(this.onDead.bind(this));
@@ -215,16 +215,16 @@ class Player {
 		this.sleepSound.play();
 	}
 
-	weakUp() {
+	wakeUp() {
 		if (! this.isSleeping) {
 			return;
 		}
 
-		this.sprite.play(`weak-up-${this.direction}`);
-		this.weakUpSound.play();
+		this.sprite.play(`wake-up-${this.direction}`);
+		this.wakeUpSound.play();
 	}
 
-	onWeakUp() {
+	onWakeUp() {
 		this.isSleeping = false;
 	}
 
@@ -250,8 +250,8 @@ class Player {
 
 		if (this.battery.outOfPower()) {
 			this.sleep();
-		} else if (this.battery.power > 27) {
-			this.weakUp();
+		} else if (this.battery.power > 25) {
+			this.wakeUp();
 		}
 
 		this.health.update();

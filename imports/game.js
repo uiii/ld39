@@ -31,7 +31,7 @@ class Game {
 		this.game.load.audio('heart', 'heart.wav');
 		this.game.load.audio('heart-fast', 'heart-fast.wav');
 		this.game.load.audio('sleep', 'sleep.wav');
-		this.game.load.audio('weak-up', 'weak-up.wav');
+		this.game.load.audio('wake-up', 'wake-up.wav');
 		this.game.load.audio('power-up', 'power-up.wav');
 		this.game.load.audio('heal', 'heal.wav');
 	}
@@ -135,7 +135,7 @@ class Game {
 	}
 
 	run() {
-		this.game = new Phaser.Game(1280, 600, Phaser.CANVAS, '', {
+		this.game = new Phaser.Game(1280, 600, Phaser.CANVAS, 'game', {
 			preload: this.preload.bind(this),
 			create: this.create.bind(this),
 			update: this.update.bind(this)
