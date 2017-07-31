@@ -56,7 +56,7 @@ class PowerUps {
 
 	maybeAdd() {
 		const elapsed = this.game.time.elapsedSecondsSince(this.lastAddTime);
-		console.log(elapsed);
+		//console.log(elapsed);
 
 		const random = this.game.rnd.frac();
 		//console.log("maybe add", elapsed, random, Math.pow(elapsed / 100, 2));
@@ -72,7 +72,6 @@ class PowerUps {
 	}
 
 	handleOverlap(player, playerSprite, powerUp) {
-		console.log(player, playerSprite, powerUp);
 		player.takePowerUp(new PowerUp(this.game, powerUp, this.battery));
 	}
 }

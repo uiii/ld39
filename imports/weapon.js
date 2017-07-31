@@ -48,8 +48,6 @@ class Weapon {
 		//this.beam.lineStyle(9.5, 0xA000C8);
 		this.game.world.bringToTop(this.beam);
 
-		console.log("fire dir", this.fireDirection);
-
 		let beamLine;
 		let collisionSide;
 		let collisionSort;
@@ -98,13 +96,13 @@ class Weapon {
 			return Phaser.Rectangle.intersects(object.getBounds(), collisionRect);
 		});
 
-		console.log(collisionRect);
-		console.log(collidingObjects);
-		console.log(beamLine);
+		//console.log(collisionRect);
+		//console.log(collidingObjects);
+		//console.log(beamLine);
 
 		if (collidingObjects.length > 0) {
 			collidingObjects.sort((a, b) => collisionSort * (a[collisionSide] - b[collisionSide]));
-			console.log(collisionLineCoordiante, Phaser.Rectangle.intersection(collidingObjects[0].getBounds(), collisionRect)[collisionSide]);
+			//console.log(collisionLineCoordiante, Phaser.Rectangle.intersection(collidingObjects[0].getBounds(), collisionRect)[collisionSide]);
 			const nearestObject = collidingObjects[0];
 
 			let intersection = Phaser.Rectangle.intersection(nearestObject.getBounds(), collisionRect)[collisionSide];
@@ -121,7 +119,7 @@ class Weapon {
 			}
 		}
 
-		console.log(beamLine);
+		//console.log(beamLine);
 
 		/*this.game.world.bringToTop(this.beam);
 		this.beam.moveTo(beamLine.start.x, beamLine.start.y);

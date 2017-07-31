@@ -105,8 +105,6 @@ class Player {
 	}
 
 	onPowerUpKeyDown(key) {
-		console.log("opukd", key);
-
 		if (! this.isPressed(key)) {
 			return;
 		}
@@ -114,8 +112,6 @@ class Player {
 		if (! this.isControllable) {
 			return;
 		}
-
-		console.log("use!");
 
 		const lastPowerUp = this.powerUps.pop();
 		lastPowerUp && lastPowerUp.use();
