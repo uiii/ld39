@@ -16,7 +16,10 @@ class Health {
 		this.sprite.animations.add('blink', [1, 2], 5, true);
 		this.sprite.animations.add('blink-fast', [1, 2], 8, true);
 
-		this.hp = 50;
+		this.heartSound = game.add.audio('heart', 0.5);
+		this.heartFastSound = game.add.audio('heart-fast', 0.5);
+
+		this.hp = 100;
 		this.hpToBeHealed = 0;
 		this.hpToBeDamaged = 0;
 	}
@@ -41,10 +44,16 @@ class Health {
 		//this.bar.crop(new Phaser.Rectangle(5, 35 - barHeight, 35, barHeight));
 		this.bar.crop(new Phaser.Rectangle(5, this.bar.y, 35, barHeight));
 
-		if (this.hp < 10) {
+		if (this.hp > 0 && this.hp < 10) {
 			this.sprite.play('blink-fast');
-		} else if (this.hp < 30) {
+			if (! this.heartFastSound.isPlaying) {
+				this.heartFastSound.play();
+			}
+		} else if (this.hp > 0 && this.hp < 30) {
 			this.sprite.play('blink');
+			if (! this.heartSound.isPlaying) {
+				this.heartSound.play();
+			}
 		} else {
 			this.sprite.animations.stop(null, true);
 		}

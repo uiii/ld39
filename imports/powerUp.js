@@ -2,14 +2,17 @@ import Phaser from './phaser';
 import Config from './config';
 
 class PowerUp {
-	constructor(sprite, battery) {
+	constructor(game, sprite, battery) {
 		this.sprite = sprite;
 		this.battery = battery;
+		this.powerUpSound = game.add.audio('power-up');
 	}
 
 	use() {
 		this.battery.charge(Config.powerUpCharge);
 		this.sprite.kill();
+		this.powerUpSound.stop();
+		this.powerUpSound.play();
 	}
 }
 
@@ -21,10 +24,10 @@ class PowerUps {
 
 		this.group = game.add.group();
 		this.group.enableBody = true;
+	}
 
+	startAdding() {
 		this.lastAddTime = this.game.time.time;
-		//this._add();
-
 		this.game.time.events.loop(1000, this.maybeAdd, this);
 	}
 
@@ -53,6 +56,7 @@ class PowerUps {
 
 	maybeAdd() {
 		const elapsed = this.game.time.elapsedSecondsSince(this.lastAddTime);
+		console.log(elapsed);
 
 		const random = this.game.rnd.frac();
 		//console.log("maybe add", elapsed, random, Math.pow(elapsed / 100, 2));
@@ -69,7 +73,7 @@ class PowerUps {
 
 	handleOverlap(player, playerSprite, powerUp) {
 		console.log(player, playerSprite, powerUp);
-		player.takePowerUp(new PowerUp(powerUp, this.battery));
+		player.takePowerUp(new PowerUp(this.game, powerUp, this.battery));
 	}
 }
 

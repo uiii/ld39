@@ -15,17 +15,33 @@ class Player {
 		this.direction = side === Side.LEFT ? Direction.RIGHT : Direction.LEFT;
 		this.pressedMoveKeys = [];
 
+		this.inputEnabled = false;
+		this.isSleeping = false;
+		this.isDead = false;
+
+		this.isControllable = true;
+
 		this.sprite = this.createSprite(game, side, this.direction);
 		this.health = new Health(game, this);
 		this.weapon = new Weapon(game, gameObjects, battery, this);
 		this.powerUps = [];
+		this.powerUpPickupSound = this.game.add.audio('power-up-pickup');
+		this.sleepSound = this.game.add.audio('sleep');
+		this.weakUpSound = this.game.add.audio('weak-up');
+		this.dyingSound = this.game.add.audio('die');
 
 		this.setKeyEvents(this.keys);
 	}
 
+	setOpponent(opponent) {
+		this.opponent = opponent;
+		this.weapon.setOpponent(opponent);
+	}
+
 	createSprite(game, side, direction) {
-		const sprite = game.add.sprite(0, 0, side === Side.LEFT ? 'robot' : 'robot', direction);
+		const sprite = game.add.sprite(0, 0, side === Side.LEFT ? 'robot-silver' : 'robot-black', direction);
 		this.gameObjects.add(sprite, true);
+
 		sprite.smoothed = false;
 		sprite.animations.add('left', [1, 2, 0], 10, false);
 		sprite.animations.add('right', [4, 5, 3], 10, false);
@@ -39,6 +55,10 @@ class Player {
 		sprite.animations.add(`weak-up-${Direction.RIGHT}`, [15, 14, 3], 2, false).onComplete.add(this.onWeakUp.bind(this));
 		sprite.animations.add(`weak-up-${Direction.UP}`, [19, 18, 9], 2, false).onComplete.add(this.onWeakUp.bind(this));
 		sprite.animations.add(`weak-up-${Direction.DOWN}`, [17, 16, 6], 2, false).onComplete.add(this.onWeakUp.bind(this));
+		sprite.animations.add(`die-${Direction.RIGHT}`, [20, 21, 22, 23, 24, 25, 26, 27, 28], 3, false).onComplete.add(this.onDead.bind(this));
+		sprite.animations.add(`die-${Direction.LEFT}`, [29, 30, 31, 32, 33, 34, 35, 36, 37], 3, false).onComplete.add(this.onDead.bind(this));
+		sprite.animations.add(`die-${Direction.UP}`, [20, 21, 22, 23, 24, 25, 26, 27, 28], 3, false).onComplete.add(this.onDead.bind(this));
+		sprite.animations.add(`die-${Direction.DOWN}`, [29, 30, 31, 32, 33, 34, 35, 36, 37], 3, false).onComplete.add(this.onDead.bind(this));
 
 		sprite.alignIn(
 			game.physics.arcade.bounds,
@@ -91,7 +111,7 @@ class Player {
 			return;
 		}
 
-		if (this.isSleeping) {
+		if (! this.isControllable) {
 			return;
 		}
 
@@ -110,7 +130,7 @@ class Player {
 		const walkingTime = this.isWalking ? this.game.time.physicsElapsed : 0;
 		this.battery.consume(walkingTime * Config.walkingPowerConsumption);
 
-		if (this.isSleeping) {
+		if (! this.isControllable) {
 			this.isWalking = false;
 			return;
 		}
@@ -164,7 +184,7 @@ class Player {
 	}
 
 	fire() {
-		if (this.isPressed(this.keys.fire) && ! this.isSleeping) {
+		if (this.isPressed(this.keys.fire) && this.isControllable) {
 			this.weapon.fire();
 		} else {
 			this.weapon.stopFire();
@@ -180,13 +200,19 @@ class Player {
 			-10
 		);
 		powerUp.sprite.bringToTop();
+		this.powerUpPickupSound.play();
 
 		this.powerUps.push(powerUp);
 	}
 
 	sleep() {
+		if (! this.isControllable) {
+			return;
+		}
+
 		this.isSleeping = true;
 		this.sprite.play(`sleep-${this.direction}`);
+		this.sleepSound.play();
 	}
 
 	weakUp() {
@@ -195,21 +221,43 @@ class Player {
 		}
 
 		this.sprite.play(`weak-up-${this.direction}`);
+		this.weakUpSound.play();
 	}
 
 	onWeakUp() {
 		this.isSleeping = false;
 	}
 
+	die() {
+		if (this.isDead) {
+			return;
+		}
+
+		this.isDead = true;
+		this.sprite.play(`die-${this.direction}`);
+		this.dyingSound.play();
+		console.log("dead");
+	}
+
+	onDead() {
+		this.game.end();
+	}
+
 	update() {
+		if (this.health.hp === 0) {
+			this.die();
+		}
+
 		if (this.battery.outOfPower()) {
 			this.sleep();
-		} else if (this.battery.power > 25) {
+		} else if (this.battery.power > 27) {
 			this.weakUp();
 		}
 
 		this.health.update();
 		this.weapon.update();
+
+		this.isControllable = this.inputEnabled && ! this.isDead && ! this.isSleeping;
 
 		this.move();
 		this.fire();

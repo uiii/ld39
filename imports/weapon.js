@@ -13,6 +13,11 @@ class Weapon {
 		this.isFiring = false;
 		this.fireFrom = new Phaser.Point(0, 0);
 		this.fireDirection = null;
+		this.fireSound = game.add.audio('fire', 1, true);
+	}
+
+	setOpponent(opponent) {
+		this.opponent = opponent;
 	}
 
 	setFireCoordinates(x, y, direction) {
@@ -22,10 +27,12 @@ class Weapon {
 
 	fire() {
 		this.isFiring = true;
+		this.fireSound.play();
 	}
 
 	stopFire() {
 		this.isFiring = false;
+		this.fireSound.stop();
 	}
 
 	update() {
@@ -35,7 +42,7 @@ class Weapon {
 			return;
 		}
 
-		let firingTime = this.game.time.physicsElapsed;
+		const firingTime = this.game.time.physicsElapsed;
 		this.battery.consume(firingTime * Config.weaponPowerConsumption);
 
 		//this.beam.lineStyle(9.5, 0xA000C8);
@@ -102,9 +109,10 @@ class Weapon {
 
 			let intersection = Phaser.Rectangle.intersection(nearestObject.getBounds(), collisionRect)[collisionSide];
 
-			if (nearestObject.key.startsWith('robot')) {
+			if (this.opponent.sprite === nearestObject) {
 				intersection += collisionSort * 20;
 				nearestObject.bringToTop();
+				this.opponent.health.damage(firingTime * Config.weaponDamage);
 			}
 
 			beamLine[collisionLineCoordiante] = intersection;

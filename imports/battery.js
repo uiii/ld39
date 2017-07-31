@@ -6,11 +6,14 @@ class Battery {
 
 		this.sprite = game.add.sprite(position.x, position.y, 'battery');
 		this.sprite.anchor.setTo(0.5, 1);
+		this.sprite.animations.add('warning', [1, 0], 2, false);
 
 		this.bgGraphics = game.add.graphics(this.sprite.left, this.sprite.top);
 		this.powerGraphics = game.add.graphics(this.sprite.left, this.sprite.top);
 
 		this.sprite.bringToTop();
+
+		this.alarmSound = game.add.audio('alarm', 0.5);
 
 		this.power = initialPower;
 		this.powerToBeCharged = 0;
@@ -49,8 +52,13 @@ class Battery {
 
 		if (this.power < 25) {
 			powerColor = 0xFF0000;
+			this.sprite.play('warning');
+			if (! this.alarmSound.isPlaying) {
+				this.alarmSound.play();
+			}
 		} else if (this.power < 50) {
 			powerColor = 0xFF9900;
+		} else {
 		}
 
 		this.powerGraphics.clear();

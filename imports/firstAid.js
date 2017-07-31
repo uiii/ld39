@@ -7,6 +7,8 @@ class FirstAid {
 
 		this.sprite = group.create(x, y, 'first-aid');
 
+		this.healSound = game.add.audio('heal', 0.5);
+
 		this.area = group.create(this.sprite.centerX, this.sprite.centerY, 'blank');
 		this.area.anchor.setTo(0.5, 0.5);
 		this.area.scale.setTo(100, 100);
@@ -18,6 +20,8 @@ class FirstAid {
 		if (this.game.physics.arcade.overlap(player.sprite, this.sprite)) {
 			this.sprite.kill();
 			player.health.heal(20);
+			this.healSound.stop();
+			this.healSound.play();
 			this.game.time.events.add(10000, this.refresh.bind(this));
 		}
 	}
