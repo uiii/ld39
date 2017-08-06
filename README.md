@@ -1,11 +1,12 @@
 # How to run
 
-Install `NodeJS` and `Meteor` (https://meteor.com)
+Install `NodeJS`
 
 ```
 cd <game-dir>
 npm install
-meteor
+npm run build
+npm start
 ```
 
-visit http://localhost:3000
+visit http://localhost:8080

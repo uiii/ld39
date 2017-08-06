@@ -73,7 +73,7 @@ class Player {
 	}
 
 	setKeyEvents(keys) {
-		for (key of ['left', 'right', 'up', 'down']) {
+		for (let key of ['left', 'right', 'up', 'down']) {
 			keys[key].onDown.add(this.onMoveKeyDown.bind(this));
 			keys[key].onUp.add(this.onMoveKeyUp.bind(this));
 		}

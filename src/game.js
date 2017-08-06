@@ -9,31 +9,31 @@ import {Side} from './constants';
 
 class Game {
 	preload() {
-		this.game.load.spritesheet('robot-silver', 'robot-silver.png', 60, 80);
-		this.game.load.spritesheet('robot-black', 'robot-black.png', 60, 80);
-		this.game.load.spritesheet('battery', 'battery.png', 55, 90);
-		this.game.load.image('power-up', 'power-up.png');
-		this.game.load.image('beam', 'beam.png');
-		this.game.load.spritesheet('box', 'box.png', 60, 65);
-		this.game.load.spritesheet('heart', 'heart.png', 45, 40);
-		this.game.load.image('first-aid', 'first-aid.png');
-		this.game.load.image('blank', 'blank.png');
-		this.game.load.image('black', 'black.png');
-		this.game.load.image('splash', 'splash.png');
-		this.game.load.image('silver-won', 'silver-won.png');
-		this.game.load.image('black-won', 'black-won.png');
-		this.game.load.image('background', 'background.png');
+		this.game.load.spritesheet('robot-silver', 'assets/robot-silver.png', 60, 80);
+		this.game.load.spritesheet('robot-black', 'assets/robot-black.png', 60, 80);
+		this.game.load.spritesheet('battery', 'assets/battery.png', 55, 90);
+		this.game.load.image('power-up', 'assets/power-up.png');
+		this.game.load.image('beam', 'assets/beam.png');
+		this.game.load.spritesheet('box', 'assets/box.png', 60, 65);
+		this.game.load.spritesheet('heart', 'assets/heart.png', 45, 40);
+		this.game.load.image('first-aid', 'assets/first-aid.png');
+		this.game.load.image('blank', 'assets/blank.png');
+		this.game.load.image('black', 'assets/black.png');
+		this.game.load.image('splash', 'assets/splash.png');
+		this.game.load.image('silver-won', 'assets/silver-won.png');
+		this.game.load.image('black-won', 'assets/black-won.png');
+		this.game.load.image('background', 'assets/background.png');
 
-		this.game.load.audio('power-up-pickup', 'power-up-pickup2.wav');
-		this.game.load.audio('fire', 'fire2.wav');
-		this.game.load.audio('die', 'die4.wav');
-		this.game.load.audio('alarm', 'alarm1.wav');
-		this.game.load.audio('heart', 'heart.wav');
-		this.game.load.audio('heart-fast', 'heart-fast.wav');
-		this.game.load.audio('sleep', 'sleep.wav');
-		this.game.load.audio('wake-up', 'wake-up.wav');
-		this.game.load.audio('power-up', 'power-up.wav');
-		this.game.load.audio('heal', 'heal.wav');
+		this.game.load.audio('power-up-pickup', 'assets/power-up-pickup2.wav');
+		this.game.load.audio('fire', 'assets/fire2.wav');
+		this.game.load.audio('die', 'assets/die4.wav');
+		this.game.load.audio('alarm', 'assets/alarm1.wav');
+		this.game.load.audio('heart', 'assets/heart.wav');
+		this.game.load.audio('heart-fast', 'assets/heart-fast.wav');
+		this.game.load.audio('sleep', 'assets/sleep.wav');
+		this.game.load.audio('wake-up', 'assets/wake-up.wav');
+		this.game.load.audio('power-up', 'assets/power-up.wav');
+		this.game.load.audio('heal', 'assets/heal.wav');
 	}
 
 	create() {
@@ -135,7 +135,7 @@ class Game {
 	}
 
 	run() {
-		this.game = new Phaser.Game(1280, 600, Phaser.CANVAS, 'game', {
+		this.game = new Phaser.Game(1280, 600, Phaser.CANVAS, '', {
 			preload: this.preload.bind(this),
 			create: this.create.bind(this),
 			update: this.update.bind(this)
